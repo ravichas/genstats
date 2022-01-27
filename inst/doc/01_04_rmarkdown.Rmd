@@ -2,7 +2,7 @@
 title: "R markdown lecture"
 author: "Jeff Leek"
 output:
-  rmarkdown::html_document:
+  rmarkdown::pdf_document:
     toc: true
   vignette: >  
     %\VignetteIndexEntry{R markdown}
