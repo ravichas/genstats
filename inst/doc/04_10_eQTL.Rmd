@@ -36,9 +36,10 @@ suppressPackageStartupMessages({
 To install these packages you can use the code (or if you are compiling the document, remove the `eval=FALSE` from the chunk.)
 
 ```{r install_packages, eval=FALSE}
-install.packages(c("devtools","MatrixEQTL"))
-source("http://www.bioconductor.org/biocLite.R")
-biocLite(c("Biobase"))
+# install.packages(c("devtools","MatrixEQTL"))
+# if (!require("BiocManager", quietly = TRUE))
+# install.packages("BiocManager")
+# BiocManager::install("Biobase")
 ```
 
 
@@ -78,7 +79,8 @@ The simplest eQTL analysis just computes linear regression models for each SNP/g
 e1 = as.numeric(expr[1,])
 s1 = as.numeric(snps[1,])
 lm1 = lm(e1 ~ s1)
-tidy(lm1)
+library(broom)
+tidy(lm1)  #broom
 ```
 
 We can visualize the data and the model fits

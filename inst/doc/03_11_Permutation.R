@@ -36,8 +36,9 @@ suppressPackageStartupMessages({
 
 ## ----install_packages, eval=FALSE----------------------------------------
 #  install.packages(c("devtools"))
-#  source("http://www.bioconductor.org/biocLite.R")
-#  biocLite(c("Biobase","limma","genefilter","jdstorey/edge"))
+# if (!require("BiocManager", quietly = TRUE))
+# install.packages("BiocManager")
+# BiocManager::install(c("Biobase", "limma", "genefilter", "jdstorey/edge"))
 
 ## ------------------------------------------------------------------------
 con =url("http://bowtie-bio.sourceforge.net/recount/ExpressionSets/bottomly_eset.RData")

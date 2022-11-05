@@ -38,9 +38,10 @@ suppressPackageStartupMessages({
 To install these packages you can use the code (or if you are compiling the document, remove the `eval=FALSE` from the chunk.)
 
 ```{r install_packages, eval=FALSE}
-install.packages(c("devtools","MatrixEQTL"))
-source("http://www.bioconductor.org/biocLite.R")
-biocLite(c("Biobase","goseq","DESeq2"))
+# install.packages(c("devtools","MatrixEQTL"))
+# if (!require("BiocManager", quietly = TRUE))
+# install.packages("BiocManager")
+# BiocManager::install(c("Biobase", "goseq","DESeq2"))
 ```
 
 
@@ -63,6 +64,9 @@ temp_data =read.table(system.file("extdata","Li_sum.txt",
                                      package="goseq"),sep="\t",
                                      header=TRUE,
                                      stringsAsFactors=FALSE)
+
+# remove the first column (gene names)
+#   df[1:3,1:10 ]
 expr= temp_data[,-1]
 rownames(expr) = temp_data[,1]
 expr = expr[rowMeans(expr) > 5,]
@@ -75,9 +79,14 @@ pdata  = data.frame(grp)
 Now we perform a differential expression analysis for the group variable with `DESeq2`
 
 ```{r}
+# ~grp is the model we are fitting
 de = DESeqDataSetFromMatrix(expr, pdata, ~grp)
 de_fit = DESeq(de)
 de_results = results(de_fit)
+```
+```{r}
+# results p value etc
+de_results
 ```
 
 Get the differentially expressed genes after FDR correction
@@ -98,8 +107,15 @@ head(supportedGenomes(),n=12)[,1:4]
 ```
 
 We need to set up a weighting function for all the genes in that genome
+Calculates a Probability Weighting Function for a set of genes based on a given set of biased data (usually gene length) and each genes status as differentially expressed or not.
+
+nullp will fit a model to account for gene length biases in our data. 
+
+When cDNAs are fragmented, long genes will result in more fragments,
+resulting in higher counts and more power to detect DE.
 
 ```{r}
+# probability Weight Function
 pwf=nullp(genes,"hg19","ensGene")
 head(pwf)
 ```
@@ -116,6 +132,16 @@ head(GO.wall)
 ### Limiting yourself to a single category you are interested in
 
 Suppose there is a particular category or function you are interested in. You can limit to just that category
+
+So if I look at the result of that, it tells me the GO category names. You can look this up on the Gene Ontology website, how over_represented it is, what the pvalue is, more under_represented. And then it tells you the number of genes that were differentially expressed in that category, the number of genes that are in that category overall
+
+Taken from "https://hbctraining.github.io/DGE_workshop_salmon/lessons/functional_analysis_2019.html" 
+"Over-representation analysis
+There are a plethora of functional enrichment tools that perform some type of “over-representation” analysis by querying databases containing information about gene function and interactions.
+
+These databases typically categorize genes into groups (gene sets) based on shared function, or involvement in a pathway, or presence in a specific cellular location, or other categorizations, e.g. functional pathways, etc. Essentially, known genes are binned into categories that have been consistently named (controlled vocabulary) based on how the gene has been annotated functionally. These categories are independent of any organism, however each organism has distinct categorizations available.
+
+To determine whether any categories are over-represented, you can determine the probability of having the observed proportion of genes associated with a specific category in your gene list based on the proportion of genes associated with the same category in the background set (gene categorizations for the appropriate organism)."
 
 ```{r}
 GO.MF=goseq(pwf,"hg19","ensGene",test.cats=c("GO:MF"))

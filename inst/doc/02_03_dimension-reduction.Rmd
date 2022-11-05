@@ -34,9 +34,9 @@ suppressPackageStartupMessages({
 To install these packages you can use the code (or if you are compiling the document, remove the `eval=FALSE` from the chunk.)
 
 ```{r install_packages, eval=FALSE}
-install.packages(c("devtools"))
-source("http://www.bioconductor.org/biocLite.R")
-biocLite(c("Biobase"))
+# install.packages(c("devtools"))
+# source("http://www.bioconductor.org/biocLite.R")
+# biocLite(c("Biobase"))
 ```
 
 
@@ -71,6 +71,17 @@ edata_centered = edata - rowMeans(edata)
 svd1 = svd(edata_centered)
 names(svd1)
 ```
+```{r}
+print(dim(edata_centered))
+print(dim(svd1$u))
+print(dim(svd1$v))
+length(svd1$d)
+```
+
+```{r}
+head(svd1$u)
+```
+
 
 ## Look at the percent variance explained
 

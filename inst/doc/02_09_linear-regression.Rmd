@@ -45,7 +45,7 @@ biocLite(c("Biobase"))
 
 Here we are going to use some data from the paper [Detection of redundant fusion transcripts as biomarkers or disease-specific therapeutic targets in breast cancer.](http://www.ncbi.nlm.nih.gov/pubmed/22496456) that uses data from different normal human tissues (called the Illumina BodyMap data).
 
-```{r}
+```{r}ex
 con =url("http://bowtie-bio.sourceforge.net/recount/ExpressionSets/bodymap_eset.RData")
 load(file=con)
 close(con)

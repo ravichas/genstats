@@ -38,9 +38,9 @@ suppressPackageStartupMessages({
 To install these packages you can use the code (or if you are compiling the document, remove the `eval=FALSE` from the chunk.)
 
 ```{r install_packages, eval=FALSE}
-install.packages(c("devtools"))
-source("http://www.bioconductor.org/biocLite.R")
-biocLite(c("Biobase","limma","jdstorey/edge"))
+# install.packages(c("devtools"))
+# source("http://www.bioconductor.org/biocLite.R")
+# biocLite(c("Biobase","limma","jdstorey/edge"))
 ```
 
 
@@ -65,8 +65,8 @@ ls()
 Here we will transform the data and remove lowly expressed genes. 
 
 ```{r}
-edata = log2(as.matrix(edata) + 1)
-edata = edata[rowMeans(edata) > 10, ]
+edata = log2(as.matrix(edata) + 1)     # 36,536 x 21
+edata = edata[rowMeans(edata) > 10, ] # 1028, 21
 ```
 
 ## Fit many regression models at once. 
